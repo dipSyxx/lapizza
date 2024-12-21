@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui";
 
-const Home: React.FC = () => {
+export default function Home() {
   return (
     <div>
       <h1>Home Page</h1>
@@ -9,6 +9,4 @@ const Home: React.FC = () => {
       </Button>
     </div>
   );
-};
-
-export default Home;
+}
