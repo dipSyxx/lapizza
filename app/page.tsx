@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui";
 
-export const Home = () => {
+const Home = () => {
   return (
     <div>
       <h1>
         Home Page
         <Button variant="outline" size="lg">
-          1Hello
+          Hello
         </Button>
       </h1>
     </div>
