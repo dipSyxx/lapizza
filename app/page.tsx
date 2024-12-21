@@ -1,14 +1,12 @@
 import { Button } from "@/components/ui";
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <div>
-      <h1>
-        Home Page
-        <Button variant="outline" size="lg">
-          Hello
-        </Button>
-      </h1>
+      <h1>Home Page</h1>
+      <Button variant="outline" size="lg">
+        Hello
+      </Button>
     </div>
   );
 };
