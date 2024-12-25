@@ -3,12 +3,12 @@ import React from 'react'
 import { useIntersection } from 'react-use'
 import { Title } from './Title'
 import { cn } from '@/lib/utils'
-import { ProductCard } from './Product-card'
+import { ProductCard, PropsProductCard } from './Product-card'
 import { useCategoryStore } from '@/store/category'
 
 interface Props {
   title: string
-  items: any[]
+  items: PropsProductCard[]
   categoryId: number
   className?: string
   listClassName?: string
@@ -39,6 +39,7 @@ export const ProductsGroupList: React.FC<Props> = ({ title, items, listClassName
             name={product.name}
             imageUrl={product.imageUrl}
             price={product.items[0].price}
+            items={product.items}
             // ingredients={product.ingredients}
           />
         ))}
