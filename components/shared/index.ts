@@ -10,4 +10,5 @@ export {RangeSlider} from "./Range-slider"
 export {CheckboxFilterGroup} from "./Checkbox-filter-group"
 export {ProductCard} from './Product-card';
 export {ProductsGroupList} from './Products-group-list'
+export {SearchInput} from './Search-input'
 

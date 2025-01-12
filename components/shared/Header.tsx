@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui'
 import { ArrowRight, ShoppingCart, User } from 'lucide-react'
+import { SearchInput } from './Search-input'
 
 interface Props {
   hasSearch?: boolean
@@ -26,6 +27,9 @@ export const Header: React.FC<Props> = ({ className }) => {
             </div>
           </div>
         </Link>
+        <div className="mx-10 flex-1">
+          <SearchInput />
+        </div>
         <div className="flex flex-row align-center gap-3">
           <Button variant="outline" className="text-base font-bold flex flex-row gap-1">
             <User size={16} />
