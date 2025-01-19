@@ -2,32 +2,51 @@
 
 import React, { useState } from 'react'
 import { FilterChecboxProps, FilterCheckbox } from './Filter-checkbox'
-import { Input } from '../ui'
+import { Input, Skeleton } from '../ui'
 
 type Item = FilterChecboxProps
 interface Props {
+  name?: string
   title: string
   items: Item[]
-  defaultItems: Item[]
+  defaultItems?: Item[]
   limit?: number
+  loading?: boolean
   searchInputPlaceholder?: string
-  onChange?: (values: string[]) => void
+  onClickCheckbox?: (id: string) => void
+  selectedIds?: Set<string>
   defaultValue?: string[]
   className?: string
 }
 
 export const CheckboxFilterGroup: React.FC<Props> = ({
+  name,
   title,
   items,
   defaultItems,
   limit = 5,
+  loading,
   searchInputPlaceholder = 'Search...',
-  // onChange,
-  // defaultValue,
+  onClickCheckbox,
+  selectedIds,
   className,
 }) => {
   const [showAll, setShowAll] = useState(false)
   const [searchValue, setSearchValue] = useState('')
+
+  if (loading) {
+    return (
+      <div className={className}>
+        <p className="font-bold mb-3">{title}</p>
+
+        {...Array(limit)
+          .fill(0)
+          .map((_, index) => <Skeleton key={index} className="h-6 mb-4 rounded-[8px]" />)}
+
+        <Skeleton className="w-28 h-6 mb-4 rounded-[8px]" />
+      </div>
+    )
+  }
 
   const list = showAll
     ? items.filter((item) => item.text.toLowerCase().includes(searchValue.toLocaleLowerCase()))
@@ -58,9 +77,9 @@ export const CheckboxFilterGroup: React.FC<Props> = ({
             text={item.text}
             value={item.value}
             endAdornment={item.endAdornment}
-            checked={false}
-            onCheckedChange={(ids) => console.log(ids)}
-            name={item.name}
+            checked={selectedIds?.has(item.value)}
+            onCheckedChange={() => onClickCheckbox?.(item.value)}
+            name={name}
           />
         ))}
       </div>
