@@ -1,4 +1,5 @@
 import { Title, Container, TopBar, Filters, ProductsGroupList } from '@/components/shared'
+import React, { Suspense } from 'react'
 
 const Home: React.FC = () => {
   return (
@@ -14,7 +15,9 @@ const Home: React.FC = () => {
         <div className="flex gap-[60px]">
           {/* filters */}
           <div className="w-[250px]">
-            <Filters />
+            <Suspense>
+              <Filters />
+            </Suspense>
           </div>
 
           {/* list of products */}
