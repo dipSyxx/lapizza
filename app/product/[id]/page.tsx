@@ -3,8 +3,13 @@ import { prisma } from '@/prisma/prisma-client'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
-const ProductPage = async (props: { params: { id: string } }) => {
-  const { id } = props.params
+interface ProductPageProps {
+  params: { id: string }
+  searchParams?: { [key: string]: string | string[] | undefined }
+}
+
+const ProductPage = async ({ params }: ProductPageProps) => {
+  const { id } = params
 
   const product = await prisma.product.findFirst({
     where: { id: Number(id) },
