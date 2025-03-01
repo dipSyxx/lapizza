@@ -13,6 +13,8 @@ import { usePizzaOptions } from '@/hooks'
 import { getPizzaDetails } from '@/lib/getPizzaDetails'
 import { IngredientItem } from './Ingredient-item'
 
+// currentItemId
+
 interface Props {
   imageUrl: string
   name: string
@@ -31,8 +33,7 @@ export const PizzaForm: React.FC<Props> = ({
   // onSubmit,
   className,
 }) => {
-  const { size, type, selectedIngredients, availableSizes, currentItemId, setSize, setType, addIngredient } =
-    usePizzaOptions(items)
+  const { size, type, selectedIngredients, availableSizes, setSize, setType, addIngredient } = usePizzaOptions(items)
 
   const { totalPrice, textDetaills } = getPizzaDetails(type, size, items, ingredients, selectedIngredients)
 

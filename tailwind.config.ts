@@ -8,7 +8,7 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-    './node_modules/@uploadthing/react/dist**',
+    './node_modules/@uploadthing/react/dist/**',
   ],
   prefix: '',
   theme: {
