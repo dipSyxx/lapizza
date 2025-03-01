@@ -4,8 +4,7 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 
 const ProductPage = async (props: { params: { id: string } }) => {
-  const resolvedParams = await props.params
-  const { id } = resolvedParams
+  const { id } = props.params
 
   const product = await prisma.product.findFirst({
     where: { id: Number(id) },
