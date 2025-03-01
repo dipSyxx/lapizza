@@ -71,6 +71,7 @@ model ProductItem {
   updatedAt DateTime @updatedAt
 }
 
+//! Ingredients
 model Ingredient {
   id Int @id @default(autoincrement())
 

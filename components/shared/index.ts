@@ -11,4 +11,8 @@ export {CheckboxFilterGroup} from "./Checkbox-filter-group"
 export {ProductCard} from './Product-card';
 export {ProductsGroupList} from './Products-group-list'
 export {SearchInput} from './Search-input'
-
+export {PizzaImage} from './Pizza-image'
+export {PizzaForm} from  './Pizza-form'
+export {ProductForm} from './Product-form'
+export { GroupVariants } from './Group-variants';
+export { ChooseProductForm } from './Choose-product-form';
