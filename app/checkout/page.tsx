@@ -15,10 +15,11 @@ import { useCart } from '@/hooks'
 import { CheckoutCart, CheckoutPersonalForm, CheckoutAddressForm } from '@/components/shared/checkout'
 import { CheckoutSidebar } from '@/components/shared/checkout-sidebar'
 
-// Компонент-заглушка для Suspense
+// Loading fallback component for Suspense
 const LoadingFallback = () => <div className="animate-pulse p-4">Loading...</div>
 
-export default function CheckoutPage() {
+// Wrap the entire checkout content in a component to ensure proper Suspense boundary
+const CheckoutContent = () => {
   const [submitting, setSubmitting] = React.useState(false)
   const { totalAmount, updateItemQuantity, items, removeCartItem, loading } = useCart()
   const { data: session } = useSession()
@@ -78,37 +79,42 @@ export default function CheckoutPage() {
   }
 
   return (
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="flex gap-10">
+          {/* Left side */}
+          <div className="flex flex-col gap-10 flex-1 mb-20">
+            <CheckoutCart
+              onClickCountButton={onClickCountButton}
+              removeCartItem={removeCartItem}
+              items={items}
+              loading={loading}
+            />
+
+            <CheckoutPersonalForm className={loading ? 'opacity-40 pointer-events-none' : ''} />
+
+            <CheckoutAddressForm className={loading ? 'opacity-40 pointer-events-none' : ''} />
+          </div>
+
+          {/* Right side */}
+          <div className="w-[450px]">
+            <CheckoutSidebar totalAmount={totalAmount} loading={loading || submitting} />
+          </div>
+        </div>
+      </form>
+    </FormProvider>
+  )
+}
+
+// Main checkout page component with Suspense boundary
+export default function CheckoutPage() {
+  return (
     <Container className="mt-10">
       <Title text="Checkout" className="font-extrabold mb-8 text-[36px]" />
 
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex gap-10">
-            {/* Left side */}
-            <div className="flex flex-col gap-10 flex-1 mb-20">
-              <Suspense fallback={<LoadingFallback />}>
-                <CheckoutCart
-                  onClickCountButton={onClickCountButton}
-                  removeCartItem={removeCartItem}
-                  items={items}
-                  loading={loading}
-                />
-
-                <CheckoutPersonalForm className={loading ? 'opacity-40 pointer-events-none' : ''} />
-
-                <CheckoutAddressForm className={loading ? 'opacity-40 pointer-events-none' : ''} />
-              </Suspense>
-            </div>
-
-            {/* Right side */}
-            <div className="w-[450px]">
-              <Suspense fallback={<LoadingFallback />}>
-                <CheckoutSidebar totalAmount={totalAmount} loading={loading || submitting} />
-              </Suspense>
-            </div>
-          </div>
-        </form>
-      </FormProvider>
+      <Suspense fallback={<LoadingFallback />}>
+        <CheckoutContent />
+      </Suspense>
     </Container>
   )
 }

@@ -38,7 +38,7 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
 
       onClose?.()
     } catch (error) {
-      console.error('Error [LOGIN]', error)
+      console.log('Error [LOGIN]', error)
       toast.error('Unable to login', {
         icon: '❌',
       })

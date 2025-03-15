@@ -8,7 +8,7 @@ import { AuthModal } from './modals'
 import { ProfileButton } from './profile-button'
 import { CartButton } from './cart-button'
 import toast from 'react-hot-toast'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Props {
@@ -17,10 +17,9 @@ interface Props {
   className?: string
 }
 
-export const Header: React.FC<Props> = ({ className }) => {
+// Separate component that uses useSearchParams
+const HeaderWithSearchParams: React.FC = () => {
   const router = useRouter()
-  const [openAuthModal, setOpenAuthModal] = React.useState(false)
-
   const searchParams = useSearchParams()
 
   React.useEffect(() => {
@@ -42,10 +41,21 @@ export const Header: React.FC<Props> = ({ className }) => {
         })
       }, 1000)
     }
-  }, [])
+  }, [router, searchParams])
+
+  return null // This component only handles side effects, doesn't render anything
+}
+
+export const Header: React.FC<Props> = ({ className }) => {
+  const [openAuthModal, setOpenAuthModal] = React.useState(false)
 
   return (
     <header className={cn('border-b border-gray-100', className)}>
+      {/* Wrap the component that uses useSearchParams in Suspense */}
+      <Suspense fallback={null}>
+        <HeaderWithSearchParams />
+      </Suspense>
+
       <Container className="flex items-center justify-between py-8">
         <Link href="/">
           <div className="flex items-center gap-4">
