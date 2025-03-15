@@ -8,15 +8,15 @@ interface Props {
   imageUrl: string
   name: string
   price: number
-  // loading?: boolean
-  // onSubmit?: VoidFunction
+  loading?: boolean
+  onSubmit?: VoidFunction
   className?: string
 }
 
 /**
  * PRODUCT selection form
  */
-export const ChooseProductForm: React.FC<Props> = ({ name, imageUrl, price, className }) => {
+export const ChooseProductForm: React.FC<Props> = ({ name, imageUrl, price, onSubmit, className, loading }) => {
   return (
     <div className={cn(className, 'flex flex-1')}>
       <div className="flex items-center justify-center flex-1 relative w-full">
@@ -31,8 +31,8 @@ export const ChooseProductForm: React.FC<Props> = ({ name, imageUrl, price, clas
         <Title text={name} size="md" className="font-extrabold mb-1" />
 
         <Button
-          // loading={loading}
-          // onClick={() => onSubmit?.()}
+          loading={loading}
+          onClick={() => onSubmit?.()}
           className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
         >
           Add to cart for {price} $

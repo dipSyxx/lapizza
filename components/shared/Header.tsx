@@ -3,9 +3,13 @@ import { Container } from './Container'
 import Link from 'next/link'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { Button } from '../ui'
-import { ArrowRight, ShoppingCart, User } from 'lucide-react'
 import { SearchInput } from './Search-input'
+import { AuthModal } from './modals'
+import { ProfileButton } from './profile-button'
+import { CartButton } from './cart-button'
+import toast from 'react-hot-toast'
+import React from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Props {
   hasSearch?: boolean
@@ -14,6 +18,32 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ className }) => {
+  const router = useRouter()
+  const [openAuthModal, setOpenAuthModal] = React.useState(false)
+
+  const searchParams = useSearchParams()
+
+  React.useEffect(() => {
+    let toastMessage = ''
+
+    if (searchParams.has('paid')) {
+      toastMessage = 'Order successfully paid! Information sent to email.'
+    }
+
+    if (searchParams.has('verified')) {
+      toastMessage = 'Email successfully verified!'
+    }
+
+    if (toastMessage) {
+      setTimeout(() => {
+        router.replace('/')
+        toast.success(toastMessage, {
+          duration: 3000,
+        })
+      }, 1000)
+    }
+  }, [])
+
   return (
     <header className={cn('border-b border-gray-100', className)}>
       <Container className="flex items-center justify-between py-8">
@@ -27,26 +57,17 @@ export const Header: React.FC<Props> = ({ className }) => {
             </div>
           </div>
         </Link>
+
         <div className="mx-10 flex-1">
           <SearchInput />
         </div>
-        <div className="flex flex-row align-center gap-3">
-          <Button variant="outline" className="text-base font-bold flex flex-row gap-1">
-            <User size={16} />
-            Log in
-          </Button>
-          <Button className={cn('group relative', className)}>
-            <b>0 $</b>
-            <span className="h-full w-[1px] bg-white/30 mx-3" />
-            <div className="flex items-center gap-1 transition duration-300 group-hover:opacity-0">
-              <ShoppingCart size={16} className="relative" strokeWidth={2} />
-              <b>0</b>
-            </div>
-            <ArrowRight
-              size={20}
-              className="absolute right-5 transition duration-300 -translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
-            />
-          </Button>
+
+        <div className="flex items-center gap-3">
+          <AuthModal open={openAuthModal} onClose={() => setOpenAuthModal(false)} />
+
+          <ProfileButton onClickSignIn={() => setOpenAuthModal(true)} />
+
+          <CartButton />
         </div>
       </Container>
     </header>
