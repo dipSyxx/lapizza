@@ -4,16 +4,16 @@ import { adminMiddleware } from '../../middleware';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  // Проверка авторизации
+  // Check authentication
   const middlewareResponse = await adminMiddleware();
   if (middlewareResponse) return middlewareResponse;
 
   try {
-    // Получаем id из params с использованием await
-    const resolvedParams = await params;
-    const id = parseInt(resolvedParams.id);
+    // Get id from params using await
+    const resolvedParams = (await params).id;
+    const id = parseInt(resolvedParams);
 
     if (isNaN(id)) {
       return NextResponse.json(
@@ -52,7 +52,7 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   // Проверка авторизации
   const middlewareResponse = await adminMiddleware();
@@ -60,8 +60,8 @@ export async function PUT(
 
   try {
     // Получаем id из params с использованием await
-    const resolvedParams = await params;
-    const id = parseInt(resolvedParams.id);
+    const resolvedParams = (await params).id;
+    const id = parseInt(resolvedParams);
 
     if (isNaN(id)) {
       return NextResponse.json(
@@ -114,7 +114,7 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   // Проверка авторизации
   const middlewareResponse = await adminMiddleware();
@@ -122,8 +122,8 @@ export async function DELETE(
 
   try {
     // Получаем id из params с использованием await
-    const resolvedParams = await params;
-    const id = parseInt(resolvedParams.id);
+    const resolvedParams = (await params).id;
+    const id = parseInt(resolvedParams);
 
     if (isNaN(id)) {
       return NextResponse.json(

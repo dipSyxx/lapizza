@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { authOptions } from '@/constants/auth-options';
 import { prisma } from '@/prisma/prisma-client';
 import { getServerSession } from 'next-auth/next';
