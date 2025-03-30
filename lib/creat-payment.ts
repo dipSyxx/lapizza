@@ -9,11 +9,11 @@ interface Props {
 
 export async function createPayment(details: Props) {
   const { data } = await axios.post<PaymentData>(
-    'https://api.yookassa.ru/v3/payments',
+    'https://api.stripe.com/v1/payments',
     {
       amount: {
         value: details.amount.toString(),
-        currency: 'RUB',
+        currency: 'usd',
       },
       capture: true,
       description: details.description,
@@ -22,13 +22,13 @@ export async function createPayment(details: Props) {
       },
       confirmation: {
         type: 'redirect',
-        return_url: process.env.YOOKASSA_CALLBACK_URL,
+        return_url: process.env.STRIPE_CALLBACK_URL,
       },
     },
     {
       auth: {
-        username: process.env.YOOKASSA_STORE_ID as string,
-        password: process.env.YOOKASSA_API_KEY as string,
+        username: process.env.STRIPE_SECRET_KEY as string,
+        password: '',
       },
       headers: {
         'Content-Type': 'application/json',

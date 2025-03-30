@@ -9,7 +9,11 @@ interface Props {
 export const AdressInput: React.FC<Props> = ({ onChange }) => {
   return (
     <div>
-      <input type="text" onChange={(e) => onChange?.(e.target.value)} />
+      <input
+        className="w-full border border-gray-300 rounded-md p-2"
+        type="text"
+        onChange={(e) => onChange?.(e.target.value)}
+      />
     </div>
   )
 }
