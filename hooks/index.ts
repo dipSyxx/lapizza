@@ -5,3 +5,5 @@ export { usePizzaOptions } from './usePizzaOptions';
 export { useCart } from './useCart';
 export { useAdminIngredients } from './useAdminIngredients';
 export { useAdminCategories } from './useAdminCategories';
+export { useAdminUsers } from './useAdminUsers';
+export { useEditUser } from './useEditUser';

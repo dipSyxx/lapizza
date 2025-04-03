@@ -3,7 +3,17 @@
 import React, { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { LayoutDashboard, Pizza, Salad, FolderTree, Settings, ChevronLeft, ChevronRight, LogOut } from 'lucide-react'
+import {
+  LayoutDashboard,
+  Pizza,
+  Salad,
+  FolderTree,
+  Settings,
+  ChevronLeft,
+  ChevronRight,
+  LogOut,
+  Users,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
@@ -19,6 +29,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     { name: 'Products', path: '/admin/products', icon: <Pizza size={20} /> },
     { name: 'Ingredients', path: '/admin/ingredients', icon: <Salad size={20} /> },
     { name: 'Categories', path: '/admin/categories', icon: <FolderTree size={20} /> },
+    { name: 'Users', path: '/admin/users', icon: <Users size={20} /> },
     { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },
   ]
 

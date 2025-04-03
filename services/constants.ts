@@ -3,4 +3,5 @@ export enum ApiRoutes {
   INGREDIENTS = 'ingredients',
   ADMIN_CATEGORIES = 'admin/categories',
   ADMIN_INGREDIENTS = 'admin/ingredients',
+  ADMIN_USERS = 'admin/users',
 }
