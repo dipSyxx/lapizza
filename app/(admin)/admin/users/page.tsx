@@ -1,25 +1,14 @@
 'use client'
 
 import { UserRole } from '@prisma/client'
-import { Search, Loader2, AlertCircle, MoreHorizontal } from 'lucide-react'
+import { Search, Loader2, AlertCircle, ArrowUpDown, User, Calendar, Mail, ShoppingBag } from 'lucide-react'
 import { useState } from 'react'
 import { format } from 'date-fns'
 
 import { Input } from '@/components/ui/input'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { SortButton } from '@/components/admin/shared/sort-button'
 import { useAdminUsers } from '@/hooks'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { UserResponse } from '@/services/adminUsers'
 import EditUserModal from '@/components/admin/users/EditUserModal'
@@ -136,6 +125,14 @@ export default function AdminUsersPage() {
     setSelectedUser(null)
   }
 
+  // Helper function to manage sorting icon classes
+  const getSortIconClasses = (field: string) => {
+    if (sortField !== field) {
+      return 'opacity-0 group-hover:opacity-50 transition-transform'
+    }
+    return `opacity-100 transition-transform ${sortDirection === 'desc' ? 'rotate-180' : ''}`
+  }
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -144,8 +141,8 @@ export default function AdminUsersPage() {
 
       <Card>
         <CardHeader className="px-5 py-4 flex flex-col sm:flex-row justify-between gap-4 bg-muted/20">
-          <div className="relative w-full sm:w-64">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <div className="flex relative w-full sm:w-64 items-center">
+            <Search className="absolute left-2 top-3.6 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search users..."
               className="pl-8"
@@ -153,16 +150,18 @@ export default function AdminUsersPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Select value={roleFilter} onValueChange={(value) => setRoleFilter(value as UserRole | 'ALL')}>
-            <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder="Filter by role" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ALL">All Roles</SelectItem>
-              <SelectItem value="USER">User</SelectItem>
-              <SelectItem value="ADMIN">Admin</SelectItem>
-            </SelectContent>
-          </Select>
+          <div style={{ marginTop: '0px' }}>
+            <Select value={roleFilter} onValueChange={(value) => setRoleFilter(value as UserRole | 'ALL')}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Filter by role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">All Roles</SelectItem>
+                <SelectItem value="USER">User</SelectItem>
+                <SelectItem value="ADMIN">Admin</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </CardHeader>
         <CardContent className="p-0">
           {loading ? (
@@ -184,96 +183,131 @@ export default function AdminUsersPage() {
             </div>
           ) : (
             <div className="rounded-md">
-              <Table>
-                <TableHeader>
-                  <TableRow className="hover:bg-muted/50">
-                    <TableHead>
-                      <SortButton
-                        active={sortField === 'fullName'}
-                        direction={sortField === 'fullName' ? sortDirection : 'asc'}
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50 border-t border-gray-200">
+                    <tr>
+                      <th
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer group"
                         onClick={() => handleSort('fullName')}
                       >
-                        Name
-                      </SortButton>
-                    </TableHead>
-                    <TableHead>
-                      <SortButton
-                        active={sortField === 'email'}
-                        direction={sortField === 'email' ? sortDirection : 'asc'}
+                        <div className="flex items-center gap-1">
+                          <span>Name</span>
+                          <ArrowUpDown size={14} className={getSortIconClasses('fullName')} />
+                        </div>
+                      </th>
+                      <th
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer group"
                         onClick={() => handleSort('email')}
                       >
-                        Email
-                      </SortButton>
-                    </TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>
-                      <SortButton
-                        active={sortField === 'Orders'}
-                        direction={sortField === 'Orders' ? sortDirection : 'asc'}
+                        <div className="flex items-center gap-1">
+                          <span>Email</span>
+                          <ArrowUpDown size={14} className={getSortIconClasses('email')} />
+                        </div>
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Role
+                      </th>
+                      <th
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer group"
                         onClick={() => handleSort('Orders')}
                       >
-                        Orders
-                      </SortButton>
-                    </TableHead>
-                    <TableHead>Verified</TableHead>
-                    <TableHead>
-                      <SortButton
-                        active={sortField === 'createdAt'}
-                        direction={sortField === 'createdAt' ? sortDirection : 'asc'}
+                        <div className="flex items-center gap-1">
+                          <span>Orders</span>
+                          <ArrowUpDown size={14} className={getSortIconClasses('Orders')} />
+                        </div>
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Verified
+                      </th>
+                      <th
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer group"
                         onClick={() => handleSort('createdAt')}
                       >
-                        Created
-                      </SortButton>
-                    </TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users.map((user) => (
-                    <TableRow key={user.id} className="hover:bg-muted/50">
-                      <TableCell className="font-medium">{user.fullName}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>
-                        <Badge variant={user.role === 'ADMIN' ? 'default' : 'secondary'}>{user.role}</Badge>
-                      </TableCell>
-                      <TableCell>{user._count.Orders}</TableCell>
-                      <TableCell>
-                        <Badge variant={user.verified ? 'default' : 'destructive'}>
-                          {user.verified ? 'Yes' : 'No'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{format(new Date(user.createdAt), 'PP')}</TableCell>
-                      <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Open menu</span>
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() => handleOpenEditModal(user.id.toString())}
-                              disabled={loadingUser}
-                            >
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="text-destructive"
-                              onClick={() => handleOpenDeleteModal(user.id.toString())}
-                              disabled={loadingUser}
-                            >
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                        <div className="flex items-center gap-1">
+                          <span>Created</span>
+                          <ArrowUpDown size={14} className={getSortIconClasses('createdAt')} />
+                        </div>
+                      </th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {users.map((user) => (
+                      <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                              <User className="h-5 w-5 text-blue-500" />
+                            </div>
+                            <div className="ml-4">
+                              <div className="text-sm font-medium text-gray-900">{user.fullName}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <Mail className="h-4 w-4 text-gray-500 mr-2" />
+                            <div className="text-sm text-gray-500">{user.email}</div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                              user.role === 'ADMIN' ? 'bg-primary/10 text-primary' : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {user.role}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <ShoppingBag className="h-4 w-4 text-gray-500 mr-2" />
+                            <div className="text-sm text-gray-500">{user._count.Orders} orders</div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                              user.verified ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                            }`}
+                          >
+                            {user.verified ? 'Yes' : 'No'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <Calendar className="h-4 w-4 text-gray-500 mr-2" />
+                            <div className="text-sm text-gray-500">{format(new Date(user.createdAt), 'PP')}</div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-primary mr-2 inline-flex items-center gap-1"
+                            onClick={() => handleOpenEditModal(user.id.toString())}
+                            disabled={loadingUser}
+                          >
+                            <span>Edit</span>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-destructive inline-flex items-center gap-1"
+                            onClick={() => handleOpenDeleteModal(user.id.toString())}
+                            disabled={loadingUser}
+                          >
+                            <span>Delete</span>
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </CardContent>
