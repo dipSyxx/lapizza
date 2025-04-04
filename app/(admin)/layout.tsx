@@ -38,7 +38,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       {/* Sidebar */}
       <div
         className={cn(
-          'bg-gray-900 text-white transition-all duration-300 ease-in-out fixed top-0 left-0 z-50',
+          'bg-gray-900 text-white transition-all duration-300 ease-in-out fixed top-0 left-0 h-screen z-50',
           collapsed ? 'w-20' : 'w-64',
         )}
       >

@@ -59,7 +59,12 @@ export const Header: React.FC<Props> = ({ className }) => {
         <HeaderWithSearchParams />
       </Suspense>
 
-      <Container className={cn('flex items-center justify-between py-8', isAdmin && 'hidden')}>
+      <Container
+        className={cn('py-8', {
+          'flex items-center justify-between': !isAdmin,
+          hidden: isAdmin,
+        })}
+      >
         <Link href="/">
           <div className="flex items-center gap-4">
             <Image src="/logo.png" width={35} height={35} alt="Logo" />
