@@ -38,7 +38,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       {/* Sidebar */}
       <div
         className={cn(
-          'bg-gray-900 text-white transition-all duration-300 ease-in-out relative',
+          'bg-gray-900 text-white transition-all duration-300 ease-in-out fixed top-0 left-0 z-50',
           collapsed ? 'w-20' : 'w-64',
         )}
       >
@@ -93,7 +93,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 overflow-auto">
+      <div className={cn('flex-1 overflow-auto ml-64 transition-all duration-300 ease-in-out', collapsed && 'ml-0')}>
         <div className="p-8 max-w-7xl mx-auto">{children}</div>
       </div>
     </div>

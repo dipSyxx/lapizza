@@ -9,7 +9,7 @@ import { ProfileButton } from './profile-button'
 import { CartButton } from './cart-button'
 import toast from 'react-hot-toast'
 import React, { Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 interface Props {
   hasSearch?: boolean
@@ -48,6 +48,9 @@ const HeaderWithSearchParams: React.FC = () => {
 
 export const Header: React.FC<Props> = ({ className }) => {
   const [openAuthModal, setOpenAuthModal] = React.useState(false)
+  const pathname = usePathname()
+
+  const isAdmin = pathname.includes('/admin')
 
   return (
     <header className={cn('border-b border-gray-100', className)}>
@@ -56,7 +59,7 @@ export const Header: React.FC<Props> = ({ className }) => {
         <HeaderWithSearchParams />
       </Suspense>
 
-      <Container className="flex items-center justify-between py-8">
+      <Container className={cn('flex items-center justify-between py-8', isAdmin && 'hidden')}>
         <Link href="/">
           <div className="flex items-center gap-4">
             <Image src="/logo.png" width={35} height={35} alt="Logo" />
